@@ -1,10 +1,149 @@
-{% extends 'pages/index.html' %}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://kit.fontawesome.com/e9edb88997.js" crossorigin="anonymous"></script>
+	{% load static %}<link rel="stylesheet" href="{% static 'sub.css' %}" />
+	<noscript><link rel="stylesheet" href="{% static 'noscript.css' %}" /></noscript>
+	<link rel="shortcut icon" href="{% static 'images/gfnk.ico' %}">
+    <title>발표의 참견</title>
+</head>
+<body class="is-preload">
 
-{% block content %}
-    <h2>Upload image</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Upload image</button>
-    </form>
-{% endblock %}
+		<!-- Wrapper-->
+			<div id="wrapper">
+
+				<!-- Header -->
+				<nav class="navbar navbar-default navbar-fixed-top">
+					<div class="brand">
+						발표의 참견
+					</div>
+				</nav>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<a href="#" class="icon solid fa-home"><span>Home</span></a>
+						<a href="#work" class="icon solid fa-folder"><span>Report</span></a>
+						<a href="#contact" class="icon solid fa-envelope"><span>Contact</span></a>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Me -->
+							<article id="home" class="panel">
+								<header>
+									{% block content %}
+									<div>
+										<p class="work_p">
+											<i class="fas fa-angle-right">  발표 동영상 파일을 업로드해 주세요.</i>
+										</p>
+										<hr>
+											<form action="http://127.0.0.1:8000/upload_file/" method="POST" enctype="multipart/form-data">
+												{% csrf_token %}
+												<input type="file" name="file" required="required">
+												<div id = "radio-div"><br>
+													<p class="work_p">
+														<i class="fas fa-angle-right">  당신의 성별을 선택해 주세요.</i>
+													</p>
+													<hr>
+														<div class="btn-group" data-toggle="buttons" id="radiogroup">
+															<input type="radio" name="check_option" value="0" required="required">남
+															<input type="radio" name="check_option" value="1" id = "radio-woman">여
+														</div><br>
+													<div>
+														<button type="submit">결과보기</button>
+													</div>
+												</div>
+											</form>
+									</div>
+									{% endblock %}
+								</header>
+
+							</article>
+
+						<!-- Work -->
+							<article id="work" class="panel">
+								<header>
+									<h2  class="work_title">Report</h2>
+								</header><hr>
+								<section>
+									<h3  class="work_title">Pose</h3>
+									<p class="normal_p">
+									발표 자세(pose)에 대한 분석 결과입니다.</p>
+									<div class="row">
+										<div class="chart-div">
+											<canvas id="pieChartCanvas" width="300px" height="300px"></canvas>
+<!--											<div id='legend-div' class="legend-div"></div>  # 범례-->
+        								</div>
+										<div class="col-4 col-6-medium col-12-small">
+											<a href="#" class="image fit"><img src="{% static 'images/work/pic01.jpg' %}" alt=""></a>
+										</div>
+									</div>
+								</section>
+								<section>
+									<h3  class="work_title">Face</h3>
+									<p class="normal_p">
+									발표 얼굴(face) 변화에 대한 분석 결과입니다.</p>
+									<div class="row">
+										<div class="chart-div">
+											<canvas id="FaceChartCanvas" width="300px" height="300px"></canvas>
+        								</div>
+										<div class="col-4 col-6-medium col-12-small">
+											<a href="#" class="image fit"><img src="{% static 'images/work/pic01.jpg' %}" alt=""></a>
+										</div>
+									</div>
+								</section>
+
+							</article>
+
+						<!-- Contact -->
+							<article id="contact" class="panel">
+								<header>
+									<h2>To. Goofanaka</h2><hr>
+								</header>
+								<form action="#" method="post">
+									<div>
+										<div class="row">
+											<div class="col-6 col-12-medium">
+												<input type="text" name="name" placeholder="Name" />
+											</div>
+											<div class="col-6 col-12-medium">
+												<input type="text" name="email" placeholder="Email" />
+											</div>
+											<div class="col-12">
+												<input type="text" name="subject" placeholder="Subject" />
+											</div>
+											<div class="col-12">
+												<textarea name="message" placeholder="Message" rows="6"></textarea>
+											</div>
+											<div class="col-12">
+												<input type="submit" value="Send Message" />
+											</div>
+										</div>
+									</div>
+								</form>
+							</article>
+
+					</div>
+
+				<!-- Footer -->
+					<div id="footer">
+						<ul class="copyright">
+							<li>&copy; GOOFANAKA .</li>
+						</ul>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="{% static 'js/jquery.min.js' %}"></script>
+			<script src="{% static 'js/browser.min.js' %}"></script>
+			<script src="{% static 'js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'js/util.js' %}"></script>
+			<script src="{% static 'js/main.js' %}"></script>
+			<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

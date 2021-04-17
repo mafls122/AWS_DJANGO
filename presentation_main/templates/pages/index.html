@@ -1,13 +1,40 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Upload test</h1>
-    {% block content %}
-    {% endblock %}
-</form>
-</body>
+{% load static %}
+	<head>
+		<link rel="shortcut icon" href="{% static 'images/gfnk.ico' %}">
+		<title>발표의 참견</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="{% static 'main.css' %}" />
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<div id="bg"></div>
+			<div id="overlay"></div>
+			<div id="main">
+
+				<!-- Header -->
+					<header id="header">
+						<h1>발표의 참견</h1>
+						<p>AI 프레젠테이션 교육 시스템, 당신의 발표를 도와드리겠습니다.</p>
+						<nav>
+							<ul>
+								<li><a href="upload" class="button alt">시작하기</a></li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<span class="copyright">&copy; GOOFANAKA .</span>
+					</footer>
+
+			</div>
+		</div>
+		<script>
+			window.onload = function() { document.body.classList.remove('is-preload'); }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; }
+		</script>
+	</body>
 </html>
