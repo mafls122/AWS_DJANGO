@@ -9,8 +9,11 @@ def index(request):
 def upload_image(request):
     return render(request, 'pages/upload.html', {})
 
+
+
 class FileUp(View):
     def post(self, request):
         video_file = request.FILES['file']
         default_storage.save(video_file.name, video_file)
+
         return redirect('../upload/#work')

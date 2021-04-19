@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <head>
+	{% load static %}
     <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="https://kit.fontawesome.com/e9edb88997.js" crossorigin="anonymous"></script>
-	{% load static %}<link rel="stylesheet" href="{% static 'sub.css' %}" />
+	<link rel="stylesheet" href="{% static 'sub.css' %}" />
 	<noscript><link rel="stylesheet" href="{% static 'noscript.css' %}" /></noscript>
 	<link rel="shortcut icon" href="{% static 'images/gfnk.ico' %}">
     <title>발표의 참견</title>
@@ -40,7 +41,7 @@
 											<i class="fas fa-angle-right">  발표 동영상 파일을 업로드해 주세요.</i>
 										</p>
 										<hr>
-											<form action="http://127.0.0.1:8000/upload_file/" method="POST" enctype="multipart/form-data">
+											<form method="POST" enctype="multipart/form-data" id="uploadForm">
 												{% csrf_token %}
 												<input type="file" name="file" required="required">
 												<div id = "radio-div"><br>
@@ -53,7 +54,7 @@
 															<input type="radio" name="check_option" value="1" id = "radio-woman">여
 														</div><br>
 													<div>
-														<button type="submit">결과보기</button>
+														<button type="submit" id="upload_btn">결과보기</button>
 													</div>
 												</div>
 											</form>
@@ -70,8 +71,9 @@
 								</header><hr>
 								<section>
 									<h3  class="work_title">Pose</h3>
-									<p class="normal_p">
-									발표 자세(pose)에 대한 분석 결과입니다.</p>
+										<p class="normal_p">
+										발표 자세(pose)에 대한 분석 결과입니다.
+										</p>
 									<div class="row">
 										<div class="chart-div">
 											<canvas id="pieChartCanvas" width="300px" height="300px"></canvas>
@@ -84,8 +86,9 @@
 								</section>
 								<section>
 									<h3  class="work_title">Face</h3>
-									<p class="normal_p">
-									발표 얼굴(face) 변화에 대한 분석 결과입니다.</p>
+										<p class="normal_p">
+										발표 얼굴(face) 변화에 대한 분석 결과입니다.
+										</p>
 									<div class="row">
 										<div class="chart-div">
 											<canvas id="FaceChartCanvas" width="300px" height="300px"></canvas>
