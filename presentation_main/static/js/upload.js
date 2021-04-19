@@ -8,17 +8,23 @@ $(function(){
 
 function uploadFile(){
 
-    var form = $('#uploadForm')[0];
-    var formData = new FormData(form);
+    var sendingData = new FormData();
+    sendingData.append('file',1234);
+
+   console.log(sendingData);
 
     $.ajax({
-        url : '13.209.142.58:8000/upload',
+        url : 'http://13.209.142.58:8000/upload/',
         type : 'POST',
-        data : formData,
+        data : sendingData,
         contentType : false,
-        processData : false
-    }).done(function(data){
-        alter('성공');
+        processData : false,
+        success: function(result){
+                                console.log(result);
+                            },
+        error : function(e){
+    console.log(e);
+    }
     });
 }
 
