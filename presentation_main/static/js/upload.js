@@ -45,14 +45,24 @@ function uploadFile(){
                 }
                 while (i <= face_limit)
 
+                var eye_label = []
+                var eye_limit = data.face_json.eye.x
+                var j = 1
+                while (j <= eye_limit){
+                    eye_label.push(j);
+                    j += 1;
+                }
+
+
                 var mouth = data.face_json.face.mouth.y
                 var brow = data.face_json.face.brow.y
                 var clown = data.face_json.face.clown.y
                 var nasolabial_folds = data.face_json.face.nasolabial_folds.y
+                var eye = data.face_json.eye.y
 
                 // Face : line Chart
                 let faceChartData = {
-                    labels: [0, 50, 100, 150, 200, 250, 300, 340],
+                    labels: face_label,
                     datasets: [{
                         label : 'mouth',
                         data: mouth,
@@ -79,7 +89,21 @@ function uploadFile(){
                     }
                     ]
                 };
-                faceChartDraw(faceChartData)
+
+                let eyeChartData = {
+                    labels: eye_label,
+                    datasets: [{
+                        label : 'eye_blink',
+                        data: eye,
+                        backgroundColor : '#a5dff9',
+                        borderColor : '#a5dff9',
+                        borderWidth: 1
+                    },
+                    ]
+                };
+
+                faceChartDraw(faceChartData);
+                EyeChartDraw(eyeChartData);
 
             }
         }
@@ -96,7 +120,7 @@ function faceChartDraw(face_data) {
 
     window.faceChart = new Chart(facectx, {
         type: 'line',
-        labels : 'mouth',
+        labels : 'face',
         data: face_data,
         options: {
             plugins: {
@@ -106,6 +130,33 @@ function faceChartDraw(face_data) {
                       title: {
                                display: true,
                                text: '얼굴 표정 변화율',
+                               position : 'bottom',
+                              }
+                            },
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function EyeChartDraw(eye_data) {
+    let eyectx = document.getElementById('EyeChartCanvas').getContext('2d');
+
+    window.eyeChart = new Chart(eyectx, {
+        type: 'bar',
+        labels : 'eye',
+        data: eye_data,
+        options: {
+            plugins: {
+                      legend: {
+                               display : false,
+                              },
+                      title: {
+                               display: true,
+                               text: '눈 깜박임 횟수',
                                position : 'bottom',
                               }
                             },

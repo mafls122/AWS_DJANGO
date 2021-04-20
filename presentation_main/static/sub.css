@@ -91,6 +91,14 @@ input::-moz-focus-inner {
 			box-sizing: border-box;
 		}
 
+		.row > .chart-div {
+		    margin-right : 100px;
+		}
+
+		.row > .info{
+		    font-size: 15pt;
+		}
+
 		.row.gtr-uniform > * > :last-child {
 			margin-bottom: 0;
 		}
