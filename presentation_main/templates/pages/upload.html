@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="https://kit.fontawesome.com/e9edb88997.js" crossorigin="anonymous"></script>
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<link rel="stylesheet" href="{% static 'sub.css' %}" />
 	<noscript><link rel="stylesheet" href="{% static 'noscript.css' %}" /></noscript>
 	<link rel="shortcut icon" href="{% static 'images/gfnk.ico' %}">
@@ -41,20 +43,20 @@
 											<i class="fas fa-angle-right">  발표 동영상 파일을 업로드해 주세요.</i>
 										</p>
 										<hr>
-											<form id="uploadForm">
+											<form id="uploadForm" enctype="multipart/form-data" method="post" action="">
 												{% csrf_token %}
-												<input type="file" name="file" required="required">
+												<input type="file" name="file" id="file" required="required" >
 												<div id = "radio-div"><br>
 													<p class="work_p">
 														<i class="fas fa-angle-right">  당신의 성별을 선택해 주세요.</i>
 													</p>
 													<hr>
 														<div class="btn-group" data-toggle="buttons" id="radiogroup">
-															<input type="radio" name="check_option" value="0" required="required">남
-															<input type="radio" name="check_option" value="1" id = "radio-woman">여
+															<input type="radio" name="gender" value="0" required="required">남
+															<input type="radio" name="gender" value="1" id = "radio-woman">여
 														</div><br>
 													<div>
-														<button type="submit" id="upload_btn">결과보기</button>
+														<a href="#work"> <button type="button" id="upload_btn">결과보기</button></a>
 													</div>
 												</div>
 											</form>

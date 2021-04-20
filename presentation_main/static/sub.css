@@ -2203,7 +2203,7 @@ input::-moz-focus-inner {
 		}
 
 /* Radio */
-#radio-woman{
+.radio-woman{
         margin-left : 50px;
 }
 
