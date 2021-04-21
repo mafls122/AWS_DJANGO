@@ -85,6 +85,7 @@ input::-moz-focus-inner {
 		flex-wrap: wrap;
 		box-sizing: border-box;
 		align-items: stretch;
+		margin-bottom : 30px;
 	}
 
 		.row > * {
@@ -93,6 +94,14 @@ input::-moz-focus-inner {
 
 		.row > .chart-div {
 		    margin-right : 100px;
+		}
+
+		.row > .chart-div-2 {
+		    margin-right : 30px;
+		}
+
+		.row > .pose-chart-div {
+		    margin-right : 50px;
 		}
 
 		.row > .info{
@@ -2211,7 +2220,7 @@ input::-moz-focus-inner {
 		}
 
 /* Radio */
-.radio-woman{
+#radio-woman{
         margin-left : 50px;
 }
 
@@ -2444,3 +2453,7 @@ img{
 .normal_p{
     font-size : 15px;
 }
+
+.poseinfo{
+		    font-size: 15pt;
+		}
