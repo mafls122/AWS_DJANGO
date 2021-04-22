@@ -32,7 +32,8 @@ function uploadFile(){
     xhr_voice.send(formData);
     xhr_pose.send(formData);
     xhr_face.send(formData);
-    test();
+
+    FunLoadingBarStart();
 
     // Voice
     xhr_voice.onreadystatechange = function (e) { //콜백 함수 생성
@@ -88,6 +89,7 @@ function uploadFile(){
                 shoulderChartDraw(pose_data);
                 pelvisChartDraw(pose_data);
                 eyeposeChartDraw(pose_data);
+                FunLoadingBarEnd();
                 imghide();
 
 
@@ -482,4 +484,24 @@ function LoadingWithMask(gif) {
     //로딩중 이미지 표시
     $('#mask').append(loadingImg);
    // $('#loadingImg').show();
+}
+
+
+function FunLoadingBarStart() {
+var backHeight = $(document).height(); //뒷 배경의 상하 폭
+var backWidth = $('#work').width(); //뒷 배경의 좌우 폭
+var backGroundCover = "<div id='back'></div>"; //뒷 배경을 감쌀 커버
+var loadingBarImage = ''; //가운데 띄워 줄 이미지
+loadingBarImage += "<div id='loadingBar'>";
+loadingBarImage += " <img src='https://blogfiles.pstatic.net/MjAyMTA0MjJfODIg/MDAxNjE5MDcyMzE3OTU4.2tYG35_dH4FVqBu45kr4_Z6h-4ArlEEC-uaLBhjDGBMg.LxV7dqakYizL0mol6-BRwvWvhA47PIhv8-4bXJZfyNog.GIF.mafls122/unnamed.gif?type=w1'/>"; //로딩 바 이미지
+loadingBarImage += "</div>";
+$('#work').append(backGroundCover).append(loadingBarImage);
+$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
+$('#back').show();
+$('#loadingBar').show();
+}
+
+function FunLoadingBarEnd() {
+$('#back, #loadingBar').hide();
+$('#back, #loadingBar').empty();
 }
