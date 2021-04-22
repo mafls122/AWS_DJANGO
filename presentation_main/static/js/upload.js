@@ -20,6 +20,8 @@ function uploadFile(){
     xhr_voice.open("POST","http://13.209.142.58:8000/voice/",true);
     xhr_pose.open("POST","http://3.35.213.193:8000/pose/",true);
     xhr_face.open("POST","http://3.36.222.252:8000/face/",true);
+//    xhr_face.open("POST","http://13.124.37.71:8000/face/",true);
+
 
     xhr_speech.responseType='json';
     xhr_voice.responseType='json';
@@ -30,9 +32,10 @@ function uploadFile(){
     xhr_voice.send(formData);
     xhr_pose.send(formData);
     xhr_face.send(formData);
+    test();
 
     // Voice
-    xhr_voice.onreadystatechange = function (e) {
+    xhr_voice.onreadystatechange = function (e) { //콜백 함수 생성
         // status는 response 상태 코드를 반환 : 200 => 정상 응답
         if(xhr_voice.status === 200) {
             xhr_voice.onload = () => {
@@ -43,6 +46,7 @@ function uploadFile(){
                 console.log(typeof(voice_data));
 
                 voiceChartDraw(voice_data);
+
 
             }
         }
@@ -84,6 +88,8 @@ function uploadFile(){
                 shoulderChartDraw(pose_data);
                 pelvisChartDraw(pose_data);
                 eyeposeChartDraw(pose_data);
+                imghide();
+
 
             }
         }
@@ -171,7 +177,7 @@ function faceChartDraw(fdata) {
 
     var mouth = fdata.face_json.face.mouth.y
     var brow = fdata.face_json.face.brow.y
-    var clown = fdata.face_json.face.clown.y
+    var cheekbones_list = fdata.face_json.face.cheekbones_list.y
     var nasolabial_folds = fdata.face_json.face.nasolabial_folds.y
 
     // Face : line Chart
@@ -184,8 +190,8 @@ function faceChartDraw(fdata) {
                         borderColor : '#a5dff9'
                     },
                     {
-                        label : 'clown',
-                        data: clown,
+                        label : 'cheekbones_list',
+                        data: cheekbones_list,
                         backgroundColor : '#ec7079',
                         borderColor : '#ec7079'
                     },
@@ -438,3 +444,42 @@ function eyeposeChartDraw(pdata) {
                   },
     });
 };
+
+function imghide(){
+    {
+  var load = document.getElementById('loading');
+  load.style.display = 'none';
+   $('#mask').hide();
+   $('#mask').empty();
+   var sttcanvas = document.getElementById("sttChartCanvas");
+   sttcanvas.getContext("2d").clearRect(0, 0, sttcanvas.width, sttcanvas.height);
+ }
+}
+
+function test(imageName) {
+    LoadingWithMask('https://blogfiles.pstatic.net/MjAyMTA0MjJfODIg/MDAxNjE5MDcyMzE3OTU4.2tYG35_dH4FVqBu45kr4_Z6h-4ArlEEC-uaLBhjDGBMg.LxV7dqakYizL0mol6-BRwvWvhA47PIhv8-4bXJZfyNog.GIF.mafls122/unnamed.gif?type=w1');
+
+}
+
+
+function LoadingWithMask(gif) {
+    //화면의 높이와 너비를 구합니다.
+    var maskHeight = 10;
+    var maskWidth  = 10;
+
+    //화면에 출력할 마스크를 설정해줍니다.
+    var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+    var loadingImg ='';
+
+    loadingImg +=" <img src='"+ gif +"' width=50px; hegiht=50px; style='position: absolute;  display: block; margin-top: 250px; margin-left : 100px; '/>";
+
+    //화면에 레이어 추가
+    $('#work').append(mask)
+
+    //마스크 표시
+    $('#mask').show();
+
+    //로딩중 이미지 표시
+    $('#mask').append(loadingImg);
+   // $('#loadingImg').show();
+}

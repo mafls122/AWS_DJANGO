@@ -45,15 +45,15 @@
 										<hr>
 											<form id="uploadForm" enctype="multipart/form-data" method="post" action="">
 												{% csrf_token %}
-												<input type="file" name="file" id="file" required="required" >
+												<input type="file" name="file" id="file">
 												<div id = "radio-div"><br>
 													<p class="work_p">
 														<i class="fas fa-angle-right">  당신의 성별을 선택해 주세요.</i>
 													</p>
 													<hr>
 														<div class="btn-group" data-toggle="buttons" id="radiogroup">
-															<input type="radio" name="gender" value="0" required="required">남
-															<input type="radio" name="gender" value="1" id = "radio-woman">여
+															<input type="radio" name="gender" value="0">남
+															<input type="radio" name="gender" value="1" id = "radio-woman" >여
 														</div><br>
 													<div>
 														<a href="#work"> <button type="button" id="upload_btn">결과보기</button></a>
@@ -71,7 +71,7 @@
 								<header>
 									<h2  class="work_title">Report</h2>
 								</header><hr>
-								<section>
+								<section id="voice">
 									<h3  class="work_title">Voice</h3>
 										<p class="normal_p">
 										음성(voice)에 대한 분석 결과입니다.
@@ -86,7 +86,7 @@
 										</div>
 									</div>
 								</section>
-								<section>
+								<section id = speech>
 									<h3  class="work_title">Speech</h3>
 										<p class="normal_p">
 										말하기(speech)에 대한 분석 결과입니다.
@@ -97,11 +97,11 @@
 <!--											<div id='legend-div' class="legend-div"></div>  # 범례-->
         								</div>
 										<div class="col-4 col-6-medium col-12-small">
-											<a href="#" class="image fit"><img src="{% static 'images/work/pic01.jpg' %}" alt=""></a>
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" id="loading">
 										</div>
 									</div>
 								</section>
-								<section>
+								<section id="pose">
 									<h3  class="work_title">Pose</h3>
 										<p class="normal_p">
 										발표 자세(pose)에 대한 분석 결과입니다.
@@ -132,7 +132,7 @@
         								</div>
 									</div>
 								</section>
-								<section>
+								<section id="face">
 									<h3  class="work_title">Face</h3>
 										<p class="normal_p">
 										발표 얼굴(face) 변화에 대한 분석 결과입니다.
