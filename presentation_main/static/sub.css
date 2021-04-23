@@ -2458,18 +2458,25 @@ img{
 	font-size: 15pt;
 }
 
-#back{
-position: absolute;
-z-index: 100;
-background-color: #000000;
-display:none;
-left:0;
-top:0;
+
+canvas {
+    position: absolute;
 }
-#loadingBar{
-position:absolute;
-left:50%;
-top: 40%;
-display:none;
-z-index:200;
+
+.img_set{
+    position: relative;
+    z-index:1000;
+    top:50%;
+    left:50%;
+    margin-top:-25px;
+    margin-left:-25px;
+}
+
+#vinfo{
+    color : #a5dff9;
+}
+
+.ttr_p{
+    margin-top: 2em;
+    color : #a5dff9;
 }

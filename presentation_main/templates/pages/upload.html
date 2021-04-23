@@ -28,7 +28,6 @@
 					<nav id="nav">
 						<a href="#" class="icon solid fa-home"><span>Home</span></a>
 						<a href="#work" class="icon solid fa-folder"><span>Report</span></a>
-						<a href="#contact" class="icon solid fa-envelope"><span>Contact</span></a>
 					</nav>
 
 				<!-- Main -->
@@ -69,6 +68,9 @@
 						<!-- Work -->
 							<article id="work" class="panel">
 								<header>
+									<div>
+										<a href="http://127.0.0.1:8000/upload/"> <button type="button" style="float: right;">다시하기</button></a>
+									</div>
 									<h2  class="work_title">Report</h2>
 								</header><hr>
 								<section id="voice">
@@ -78,11 +80,18 @@
 										</p>
 									<div class="row">
 										<div class="chart-div-2 col-4">
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_v">
 											<canvas id="voiceChartCanvas" width="200px" height="200px"></canvas>
 <!--											<div id='legend-div' class="legend-div"></div>  # 범례-->
         								</div>
 										<div class="col-7 col-6-medium col-12-small">
-											<i class="fas fa-angle-right poseinfo"> 발표시 목소리 그래프에 대한 설명.</i>
+											<i class="fas fa-angle-right poseinfo"> 목소리 톤</i>
+											<p class="normal_p">
+												- 음성 주파수는 어느 정도가 좋다고 특정해서 말할 수 없습니다.<br>
+												- 다만 남성은 110~130헤르츠(hz), 여성은 210~240헤르츠(hz)의 영역 대의 목소리가 일반적으로 듣기 좋은 목소리라고 합니다.<br>
+												- 그래프 상에서 목소리가 해당 범위를 자주 벗어나거나 크게 벗어나는 구간이 있다면 유의해서 살펴보시기 바랍니다.<br>
+											</p>
+											<i class="fas fa-angle-right poseinfo" id="vinfo"> </i>
 										</div>
 									</div>
 								</section>
@@ -92,12 +101,24 @@
 										말하기(speech)에 대한 분석 결과입니다.
 										</p>
 									<div class="row">
-										<div class="chart-div">
-											<canvas id="sttChartCanvas" width="300px" height="300px"></canvas>
-<!--											<div id='legend-div' class="legend-div"></div>  # 범례-->
+										<div class="chart-div col-5">
+											<i class="fas fa-angle-right poseinfo"> TTR (Type Token Ratio)</i>
+											<div id="ttr">
+												<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s">
+												<canvas id="ttrChartCanvas" width="200px" height="100px"></canvas>
+											</div>
+											<p class="normal_p">
+												- TTR 은 어휘를 얼마나 다양하게 썼는지에 대한 지표입니다.<br>
+												- 한국어 화자는 평균 20% ~ 40% 를 유지합니다.<br>
+											</p>
         								</div>
-										<div class="col-4 col-6-medium col-12-small">
-											<img src="{% static 'images/loading.gif' %}" width="50" height="50" id="loading">
+										<div class="col-5 col-6-medium col-12-small">
+											<i class="fas fa-angle-right poseinfo"> 어미분석</i>
+											<p class="normal_p">
+												- 발표 중 화법의 비중에 대한 지표입니다.
+											</p>
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s2">
+											<canvas id="sttChartCanvas" width="200px" height="100px"></canvas>
 										</div>
 									</div>
 								</section>
@@ -108,6 +129,7 @@
 										</p>
 									<div class="row">
 										<div class="chart-div-2 col-4">
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" id="img_p" class="img_set">
 											<canvas id="poseChartCanvas" width="200px" height="200px"></canvas>
 <!--											<div id='legend-div' class="legend-div"></div>  # 범례-->
         								</div>
@@ -139,54 +161,28 @@
 										</p>
 									<div class="row">
 										<div class="chart-div-2 col-4 col-6-medium col-12-small">
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_f">
 											<canvas id="FaceChartCanvas" width="300px" height="300px"></canvas>
         								</div>
 										<p class="normal_p col-7">
 											<br>
-											<i class="fas fa-angle-right info"> 발표시 표정의 변화 정도를 보여주는 그래프입니다.</i>
+											<i class="fas fa-angle-right poseinfo"> 표정의 변화</i>
 											<br>
-											특정 구간에서 값의 진폭이 심했다면 그 시점에 표정을 크게 바뀐 것을 의미합니다.
+											특정 구간에서 값의 진폭이 크다면 그 시점에 표정이 크게 바뀐 것을 의미합니다.
 										</p>
 										<div class="chart-div-2 col-4 col-6-medium col-12-small">
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_f2">
 											<canvas id="eyeblinkChartCanvas" width="300px" height="300px"></canvas>
 										</div>
 										<p class="normal_p col-7">
 											<br>
-											<i class="fas fa-angle-right info"> 발표시 분당 눈 깜박임 횟수를 보여주는 그래프입니다.</i>
+											<i class="fas fa-angle-right poseinfo"> 분당 눈 깜박임 횟수</i>
 											<br>
-											특정 구간에서 높은 값이 나왔다면 그 시점에서 당황했거나 긴장한 것을 의미합니다
+											특정 구간에서 높은 값이 나왔다면 그 시점에서 당황했거나 긴장한 것을 의미합니다.
 										</p>
 									</div>
 								</section>
 
-							</article>
-
-						<!-- Contact -->
-							<article id="contact" class="panel">
-								<header>
-									<h2>To. Goofanaka</h2><hr>
-								</header>
-								<form action="#" method="post">
-									<div>
-										<div class="row">
-											<div class="col-6 col-12-medium">
-												<input type="text" name="name" placeholder="Name" />
-											</div>
-											<div class="col-6 col-12-medium">
-												<input type="text" name="email" placeholder="Email" />
-											</div>
-											<div class="col-12">
-												<input type="text" name="subject" placeholder="Subject" />
-											</div>
-											<div class="col-12">
-												<textarea name="message" placeholder="Message" rows="6"></textarea>
-											</div>
-											<div class="col-12">
-												<input type="submit" value="Send Message" />
-											</div>
-										</div>
-									</div>
-								</form>
 							</article>
 
 					</div>

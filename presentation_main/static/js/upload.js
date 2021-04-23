@@ -19,9 +19,7 @@ function uploadFile(){
     xhr_speech.open("POST","http://13.209.142.58:8000/upload/",true);
     xhr_voice.open("POST","http://13.209.142.58:8000/voice/",true);
     xhr_pose.open("POST","http://3.35.213.193:8000/pose/",true);
-    xhr_face.open("POST","http://3.36.222.252:8000/face/",true);
-//    xhr_face.open("POST","http://13.124.37.71:8000/face/",true);
-
+    xhr_face.open("POST","http://54.180.68.1:8000/face/",true);
 
     xhr_speech.responseType='json';
     xhr_voice.responseType='json';
@@ -33,8 +31,6 @@ function uploadFile(){
     xhr_pose.send(formData);
     xhr_face.send(formData);
 
-    FunLoadingBarStart();
-
     // Voice
     xhr_voice.onreadystatechange = function (e) { //콜백 함수 생성
         // status는 response 상태 코드를 반환 : 200 => 정상 응답
@@ -42,18 +38,16 @@ function uploadFile(){
             xhr_voice.onload = () => {
 
                 var voice_data = xhr_voice.response;
-                console.log('voice');
-                console.log(voice_data);
-                console.log(typeof(voice_data));
-
+                imghide('img_v','voiceChartCanvas');
                 voiceChartDraw(voice_data);
-
+                voice_txt(voice_data);
 
             }
         }
         else {
                 console.log('Voice engine Error!');
                 console.log(e);
+
         }
     };
 
@@ -66,8 +60,11 @@ function uploadFile(){
                 var speech_data = xhr_speech.response;
                 console.log('speech');
                 console.log(speech_data);
-
-//                faceChartDraw(face_data);
+                TTR_txt(speech_data)
+//                fillerwords(speech_data);
+                imghide('img_s','ttrChartCanvas');
+                imghide('img_s2','sttChartCanvas');
+                sttChartDraw(speech_data);
 
             }
         }
@@ -89,8 +86,11 @@ function uploadFile(){
                 shoulderChartDraw(pose_data);
                 pelvisChartDraw(pose_data);
                 eyeposeChartDraw(pose_data);
-                FunLoadingBarEnd();
-                imghide();
+
+                var canvas = document.getElementById('poseChartCanvas');
+                canvas.style.position = 'relative';
+                imghide('img_p','shoulderChartCanvas');
+
 
 
             }
@@ -111,6 +111,8 @@ function uploadFile(){
 
                 faceChartDraw(face_data);
                 eyeChartDraw(face_data);
+                imghide('img_f','FaceChartCanvas');
+                imghide('img_f2','eyeblinkChartCanvas');
 
             }
         }
@@ -366,6 +368,7 @@ function shoulderChartDraw(pdata) {
                   },
     });
 };
+
 // 골반 대칭 차트
 function pelvisChartDraw(pdata) {
     let pelvisctx = document.getElementById('pelvisChartCanvas').getContext('2d');
@@ -406,6 +409,7 @@ function pelvisChartDraw(pdata) {
                   },
     });
 };
+
 // 눈 대칭 차트
 function eyeposeChartDraw(pdata) {
     let eyeposectx = document.getElementById('eyeChartCanvas').getContext('2d');
@@ -447,61 +451,107 @@ function eyeposeChartDraw(pdata) {
     });
 };
 
-function imghide(){
-    {
-  var load = document.getElementById('loading');
-  load.style.display = 'none';
-   $('#mask').hide();
-   $('#mask').empty();
-   var sttcanvas = document.getElementById("sttChartCanvas");
-   sttcanvas.getContext("2d").clearRect(0, 0, sttcanvas.width, sttcanvas.height);
- }
+// 어미 분석 차트
+function sttChartDraw(sdata) {
+    let sttctx = document.getElementById('sttChartCanvas').getContext('2d');
+
+    var formal = sdata.stt_json.speak_end.formal_speak
+    var question = sdata.stt_json.speak_end.question_speak
+
+    let sttChartData = {
+    labels: ['참여유도형 화법', '공식적 화법'],
+    datasets: [{
+        data: [question, formal],
+        backgroundColor : ['#fecaca', '#a5dff9'],
+        }]
+    };
+
+    window.pieChart = new Chart(sttctx, {
+        type: 'pie',
+        data: sttChartData,
+         options: {
+                    responsive: true,
+                    plugins: {
+                              legend: {
+                                        display : false,
+                              },
+                              title: {
+                                        display: true,
+                                        text: '화법 비율',
+                                        position : 'bottom',
+                              }
+                            },
+                  },
+    });
+};
+
+// 로딩 이미지 숨기기
+function imghide(imgname,canvasname){
+
+    var load = document.getElementById(imgname);
+    load.style.display = 'none';
+
+    var canvas = document.getElementById(canvasname);
+    canvas.style.position = 'relative';
+
 }
 
-function test(imageName) {
-    LoadingWithMask('https://blogfiles.pstatic.net/MjAyMTA0MjJfODIg/MDAxNjE5MDcyMzE3OTU4.2tYG35_dH4FVqBu45kr4_Z6h-4ArlEEC-uaLBhjDGBMg.LxV7dqakYizL0mol6-BRwvWvhA47PIhv8-4bXJZfyNog.GIF.mafls122/unnamed.gif?type=w1');
+// 목소리 톤 결과 출력
+function voice_txt(vdata){
+
+    var vstd = vdata.voice_json.voice_std
+    var vavg = vdata.voice_json.voice_mean
+    var vres = vdata.voice_json.voice_check
+    var res_txt = ''
+
+    if(vres == 1){
+        res_txt = '목소리 톤이 너무 단조롭습니다. 조금만 더 목소리의 음성의 높낮이를 다양하게 해보세요.'
+    }
+    else if(vres == 2){
+        res_txt = '목소리 톤이 적정합니다. 핵심 단어는적절히 강조해 주세요.'
+    }
+    else if(vres == 3){
+        res_txt = '목소리 톤이 아나운서와 유사합니다. 긴장하지마시고 이대로만 하세요.'
+    }
+    else {
+        res_txt = '목소리 톤이 너무 산만합니다. 마음을 가라앉히고 침착하게 해보세요.'
+    }
+
+    var vinfo = document.getElementById("vinfo");
+    var node = document.createTextNode(res_txt);
+    vinfo.appendChild(node);
 
 }
 
+// fillerwords 테이블 생성
+function fillerwords(data) {
 
-function LoadingWithMask(gif) {
-    //화면의 높이와 너비를 구합니다.
-    var maskHeight = 10;
-    var maskWidth  = 10;
+    var fw = sdata.stt_json.fillerwords;
+    var test = sdata.stt_json.fillerwords.그냥;
 
-    //화면에 출력할 마스크를 설정해줍니다.
-    var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
-    var loadingImg ='';
+    console.log(fw);
+    console.log(test);
 
-    loadingImg +=" <img src='"+ gif +"' width=50px; hegiht=50px; style='position: absolute;  display: block; margin-top: 250px; margin-left : 100px; '/>";
+    var table = document.getElementById('table1')
 
-    //화면에 레이어 추가
-    $('#work').append(mask)
+    for (var i=0; i < data.length; i++) {
+        var row = `<tr>
+                    <td>${data[i].이름}</td>
+                    <td>${data[i].나이}</td>
+                    <td>${data[i].성별}</td> </tr>`
 
-    //마스크 표시
-    $('#mask').show();
-
-    //로딩중 이미지 표시
-    $('#mask').append(loadingImg);
-   // $('#loadingImg').show();
+                    table.innerHTML += row
+    }
 }
 
+// speech TTR 텍스트 출력
+function TTR_txt(sdata){
 
-function FunLoadingBarStart() {
-var backHeight = $(document).height(); //뒷 배경의 상하 폭
-var backWidth = $('#work').width(); //뒷 배경의 좌우 폭
-var backGroundCover = "<div id='back'></div>"; //뒷 배경을 감쌀 커버
-var loadingBarImage = ''; //가운데 띄워 줄 이미지
-loadingBarImage += "<div id='loadingBar'>";
-loadingBarImage += " <img src='https://blogfiles.pstatic.net/MjAyMTA0MjJfODIg/MDAxNjE5MDcyMzE3OTU4.2tYG35_dH4FVqBu45kr4_Z6h-4ArlEEC-uaLBhjDGBMg.LxV7dqakYizL0mol6-BRwvWvhA47PIhv8-4bXJZfyNog.GIF.mafls122/unnamed.gif?type=w1'/>"; //로딩 바 이미지
-loadingBarImage += "</div>";
-$('#work').append(backGroundCover).append(loadingBarImage);
-$('#back').css({ 'width': backWidth, 'height': backHeight, 'opacity': '0.3' });
-$('#back').show();
-$('#loadingBar').show();
-}
+    var ttr = sdata.stt_json.ttr_check;
+    var ttr_div = document.getElementById('ttr')
+    var ttr_txt = ''
+    ttr_txt +=" <p class='ttr_p'> 어휘 다양도 : " + ttr + " %</p>";
 
-function FunLoadingBarEnd() {
-$('#back, #loadingBar').hide();
-$('#back, #loadingBar').empty();
+    $('#ttr').append(ttr_txt);
+
 }
