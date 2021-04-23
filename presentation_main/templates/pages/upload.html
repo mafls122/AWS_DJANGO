@@ -7,6 +7,9 @@
 	<script src="https://kit.fontawesome.com/e9edb88997.js" crossorigin="anonymous"></script>
 	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'wordcloud.css' %}" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/wordcloud.js' %}"></script>
 	<link rel="stylesheet" href="{% static 'sub.css' %}" />
 	<noscript><link rel="stylesheet" href="{% static 'noscript.css' %}" /></noscript>
 	<link rel="shortcut icon" href="{% static 'images/gfnk.ico' %}">
@@ -121,6 +124,23 @@
 											<canvas id="sttChartCanvas" width="200px" height="100px"></canvas>
 										</div>
 									</div>
+									<div class="row">
+										<div class="chart-div col-5">
+											<i class="fas fa-angle-right poseinfo"> Word Cloud</i>
+											<div id="wc">
+												<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s3">
+												<div id="example" style="width: 200px; height: 200px;"></div>
+												<canvas id="wcChartCanvas" width="200px" height="100px"></canvas>
+											</div>
+        								</div>
+										<div class="col-5 col-6-medium col-12-small">
+											<i class="fas fa-angle-right poseinfo"> Filler Words</i>
+											<p class="normal_p">
+												- [어.., 음, 그러니까..] 등의 말을 잇기 위해서 사용한 불필요한 추임새들의 빈도입니다.
+											</p>
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s4">
+										</div>
+									</div>
 								</section>
 								<section id="pose">
 									<h3  class="work_title">Pose</h3>
@@ -142,6 +162,7 @@
 											</p>
 										</div>
 									</div>
+
 									<div class="row">
 										<div class="col-4">
 											<canvas id="shoulderChartCanvas" width="200px" height="100px"></canvas>
