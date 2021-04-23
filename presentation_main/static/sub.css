@@ -2480,3 +2480,15 @@ canvas {
     margin-top: 2em;
     color : #a5dff9;
 }
+
+#img_s{
+    margin-top:20px;
+}
+
+#img_s2{
+    margin-top:-55px;
+}
+
+#img_s4{
+    margin-top:-5px;
+}

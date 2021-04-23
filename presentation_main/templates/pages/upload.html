@@ -5,13 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="https://kit.fontawesome.com/e9edb88997.js" crossorigin="anonymous"></script>
-	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="{% static 'wordcloud.css' %}" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-    <script type="text/javascript" src="{% static 'js/wordcloud.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'wordcloud.css' %}" />
 	<link rel="stylesheet" href="{% static 'sub.css' %}" />
-	<noscript><link rel="stylesheet" href="{% static 'noscript.css' %}" /></noscript>
 	<link rel="shortcut icon" href="{% static 'images/gfnk.ico' %}">
     <title>발표의 참견</title>
 </head>
@@ -107,13 +105,13 @@
 										<div class="chart-div col-5">
 											<i class="fas fa-angle-right poseinfo"> TTR (Type Token Ratio)</i>
 											<div id="ttr">
-												<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s">
 												<canvas id="ttrChartCanvas" width="200px" height="100px"></canvas>
+												<p class="normal_p">
+													- TTR 은 어휘를 얼마나 다양하게 썼는지에 대한 지표입니다.<br>
+													- 한국어 화자는 평균 20% ~ 40% 를 유지합니다.<br>
+												</p>
+												<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s">
 											</div>
-											<p class="normal_p">
-												- TTR 은 어휘를 얼마나 다양하게 썼는지에 대한 지표입니다.<br>
-												- 한국어 화자는 평균 20% ~ 40% 를 유지합니다.<br>
-											</p>
         								</div>
 										<div class="col-5 col-6-medium col-12-small">
 											<i class="fas fa-angle-right poseinfo"> 어미분석</i>
@@ -124,21 +122,22 @@
 											<canvas id="sttChartCanvas" width="200px" height="100px"></canvas>
 										</div>
 									</div>
-									<div class="row">
+									<div class="row" style="margin-top : 50px;">
 										<div class="chart-div col-5">
 											<i class="fas fa-angle-right poseinfo"> Word Cloud</i>
 											<div id="wc">
-												<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s3">
-												<div id="example" style="width: 200px; height: 200px;"></div>
-												<canvas id="wcChartCanvas" width="200px" height="100px"></canvas>
+												<div id="wordcloud" style="width: 450px; height: 300px;">
+													<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s3">
+												</div>
+												<canvas id="wcChartCanvas" width="200px" height="200px"></canvas>
 											</div>
         								</div>
 										<div class="col-5 col-6-medium col-12-small">
+											<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s4">
 											<i class="fas fa-angle-right poseinfo"> Filler Words</i>
 											<p class="normal_p">
 												- [어.., 음, 그러니까..] 등의 말을 잇기 위해서 사용한 불필요한 추임새들의 빈도입니다.
 											</p>
-											<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s4">
 										</div>
 									</div>
 								</section>
@@ -197,9 +196,9 @@
 										</div>
 										<p class="normal_p col-7">
 											<br>
-											<i class="fas fa-angle-right poseinfo"> 분당 눈 깜박임 횟수</i>
-											<br>
-											특정 구간에서 높은 값이 나왔다면 그 시점에서 당황했거나 긴장한 것을 의미합니다.
+											<i class="fas fa-angle-right poseinfo"> 분당 눈 깜박임 횟수</i><br>
+											- 특정 구간에서 높은 값이 나왔다면 그 시점에서 당황했거나 긴장한 것을 의미합니다.<br>
+											- 평균적인 사람들의 눈 깜박임 횟수는 1분에 25회 ~ 30회 입니다.
 										</p>
 									</div>
 								</section>
@@ -224,6 +223,7 @@
 			<script src="{% static 'js/util.js' %}"></script>
 			<script src="{% static 'js/main.js' %}"></script>
 			<script src="{% static 'js/upload.js' %}"></script>
+    		<script src="{% static 'js/wordcloud.js' %}"></script>
 
 </body>
 </html>
