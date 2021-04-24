@@ -8,6 +8,7 @@
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 	<link rel="stylesheet" href="{% static 'wordcloud.css' %}" />
 	<link rel="stylesheet" href="{% static 'sub.css' %}" />
 	<link rel="shortcut icon" href="{% static 'images/gfnk.ico' %}">
@@ -34,7 +35,7 @@
 				<!-- Main -->
 					<div id="main">
 
-						<!-- Me -->
+						<!-- Home -->
 							<article id="home" class="panel">
 								<header>
 									{% block content %}
@@ -105,16 +106,18 @@
 										<div class="chart-div col-5">
 											<i class="fas fa-angle-right poseinfo"> TTR (Type Token Ratio)</i>
 											<div id="ttr">
-												<canvas id="ttrChartCanvas" width="200px" height="100px"></canvas>
-												<p class="normal_p">
+												<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s">
+												<p class="proun_p">
+													어휘 다양도 :
+												</p>
+											</div>
+											<p class="normal_p">
 													- TTR 은 어휘를 얼마나 다양하게 썼는지에 대한 지표입니다.<br>
 													- 한국어 화자는 평균 20% ~ 40% 를 유지합니다.<br>
 												</p>
-												<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s">
-											</div>
         								</div>
 										<div class="col-5 col-6-medium col-12-small">
-											<i class="fas fa-angle-right poseinfo"> 어미분석</i>
+											<i class="fas fa-angle-right poseinfo"> 어미 분석</i>
 											<p class="normal_p">
 												- 발표 중 화법의 비중에 대한 지표입니다.
 											</p>
@@ -123,13 +126,12 @@
 										</div>
 									</div>
 									<div class="row" style="margin-top : 50px;">
-										<div class="chart-div col-5">
+										<div class="chart-div col-5 col-6-medium col-12-small">
 											<i class="fas fa-angle-right poseinfo"> Word Cloud</i>
 											<div id="wc">
-												<div id="wordcloud" style="width: 450px; height: 300px;">
+												<div id="wordcloud" style="width: 100%; height: 300px;">
 													<img src="{% static 'images/loading.gif' %}" width="50" height="50" class="img_set" id="img_s3">
 												</div>
-												<canvas id="wcChartCanvas" width="200px" height="200px"></canvas>
 											</div>
         								</div>
 										<div class="col-5 col-6-medium col-12-small">
@@ -143,6 +145,8 @@
 									<div class="row" style="margin-top : 50px;">
 										<div class="chart-div col-5">
 											<i class="fas fa-angle-right poseinfo"> 속도 분석</i>
+											<div id="sylab_chart">
+											</div>
 											<p class="normal_p">
 												- 발표 시 어느 정도 속도로 말을 했는지에 대한 지표입니다.<br>
 												- 한국어 화자의 평균 말 속도는 분당 240 ~ 300 입니다.
@@ -150,6 +154,8 @@
         								</div>
 										<div class="col-5 col-6-medium col-12-small">
 											<i class="fas fa-angle-right poseinfo"> 발음 정확도</i>
+											<div id="pro">
+											</div>
 											<p class="normal_p">
 												- 사람의 귀로는 명확히 들리는 발음을 컴퓨터는 정확히 인식하지 못할 수도 있습니다.<br>
 												- 녹음 환경에 따라 발음 정확도의 차이가 존재할 수 있습니다. <br>
@@ -167,7 +173,6 @@
 										<div class="chart-div-2 col-4">
 											<img src="{% static 'images/loading.gif' %}" width="50" height="50" id="img_p" class="img_set">
 											<canvas id="poseChartCanvas" width="200px" height="200px"></canvas>
-<!--											<div id='legend-div' class="legend-div"></div>  # 범례-->
         								</div>
 										<div class="col-7 col-6-medium col-12-small">
 											<i class="fas fa-angle-right poseinfo"> 전체적인 자세</i><br>
@@ -240,7 +245,6 @@
 			<script src="{% static 'js/util.js' %}"></script>
 			<script src="{% static 'js/main.js' %}"></script>
 			<script src="{% static 'js/upload.js' %}"></script>
-    		<script src="{% static 'js/wordcloud.js' %}"></script>
 
 </body>
 </html>

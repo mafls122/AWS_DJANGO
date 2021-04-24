@@ -2494,3 +2494,15 @@ canvas {
     margin-left:-25px;
 }
 
+.proun_p{
+    margin-top : 2em;
+    color : #a5dff9;
+}
+
+.res_p{
+    margin-top : 2em;
+    color : #a5dff9;
+    font-size: 200%;
+    text-align : center;
+
+}
