@@ -60,15 +60,18 @@ function uploadFile(){
                 var speech_data = xhr_speech.response;
                 console.log('speech');
                 console.log(speech_data);
+
+                imghide('img_s');
+                imgcanhide('img_s2','sttChartCanvas');
+                imghide('img_s3');
+                imghide('img_s4');
+                imghide('img_s5');
+
                 TTR_txt(speech_data);
                 WordCloud(speech_data);
                 pronunciation(speech_data);
                 sylab(speech_data);
-//                fillerwords(speech_data);
-                imghide('img_s');
-                imgcanhide('img_s2','sttChartCanvas');
-                imghide('img_s3');
-                imghide('img_s4','sttChartCanvas');
+                fillerwords(speech_data);
                 sttChartDraw(speech_data);
 
             }
@@ -87,16 +90,14 @@ function uploadFile(){
 
                 var pose_data = xhr_pose.response;
 
-                poseChartDraw(pose_data);
-                shoulderChartDraw(pose_data);
-                pelvisChartDraw(pose_data);
-                eyeposeChartDraw(pose_data);
-
                 var canvas = document.getElementById('poseChartCanvas');
                 canvas.style.position = 'relative';
                 imgcanhide('img_p','shoulderChartCanvas');
 
-
+                poseChartDraw(pose_data);
+                shoulderChartDraw(pose_data);
+                pelvisChartDraw(pose_data);
+                eyeposeChartDraw(pose_data);
 
             }
         }
@@ -114,10 +115,18 @@ function uploadFile(){
 
                 var face_data = xhr_face.response;
 
-                faceChartDraw(face_data);
-                eyeChartDraw(face_data);
+                var fcanvas = document.getElementById('Face2ChartCanvas');
+                fcanvas.style.position = 'relative';
                 imgcanhide('img_f','FaceChartCanvas');
                 imgcanhide('img_f2','eyeblinkChartCanvas');
+
+                cheekChartDraw(face_data);
+                nasolabialChartDraw(face_data);
+                mouthChartDraw(face_data);
+                browChartDraw(face_data);
+
+                eyeChartDraw(face_data);
+
 
             }
         }
@@ -142,7 +151,8 @@ function voiceChartDraw(vdata) {
                         label : 'voice',
                         data: voice,
                         backgroundColor : '#a5dff9',
-                        borderColor : '#a5dff9'
+                        borderColor : '#a5dff9',
+                        borderWidth: 1
                     },
                     ]
                 };
@@ -158,25 +168,104 @@ function voiceChartDraw(vdata) {
                               },
                       title: {
                                display: true,
-                               text: '목소리의 높낮이',
+                               text: '목소리의 Hz',
                                position : 'bottom',
                               }
                             },
             scales: {
                 x: {
                     beginAtZero: true
-                }
+                },
+                y: {
+                    display: true,
+                    title: {
+                      display: true,
+                      text: 'Hz'
+                    }
+                  }
             }
         }
     });
 }
 
 // 표정변화율 차트
-function faceChartDraw(fdata) {
+//function faceChartDraw(fdata) {
+//    let facectx = document.getElementById('FaceChartCanvas').getContext('2d');
+//
+//    var face_label = []
+//    var face_limit = fdata.face_json.face.mouth.x
+//    var i = 0
+//    do{
+//       face_label.push(i);
+//       i += 50;
+//    }
+//    while (i <= face_limit)
+//
+//    var mouth = fdata.face_json.face.mouth.y
+//    var brow = fdata.face_json.face.brow.y
+//    var cheekbones_list = fdata.face_json.face.cheekbones_list.y
+//    var nasolabial_folds = fdata.face_json.face.nasolabial_folds.y
+//
+//    // Face : line Chart
+//    let faceChartData = {
+//                    labels: face_label,
+//                    datasets: [{
+//                        label : '입 주변',
+//                        data: mouth,
+//                        backgroundColor : '#a5dff9',
+//                        borderColor : '#a5dff9'
+//                    },
+//                    {
+//                        label : '광대 주변',
+//                        data: cheekbones_list,
+//                        backgroundColor : '#ec7079',
+//                        borderColor : '#ec7079'
+//                    },
+//                    {
+//                        label : '미간',
+//                        data: brow,
+//                        backgroundColor : '#bb9ecb',
+//                        borderColor : '#bb9ecb'
+//                    },
+//                    {
+//                        label : '팔자 주변',
+//                        data: nasolabial_folds,
+//                        backgroundColor : '#ffdfa2',
+//                        borderColor : '#ffdfa2'
+//                    }
+//                    ]
+//                };
+//
+//    window.faceChart = new Chart(facectx, {
+//        type: 'line',
+//        labels : 'face',
+//        data: faceChartData,
+//        options: {
+//            plugins: {
+//                      legend: {
+//                               display : false,
+//                              },
+//                      title: {
+//                               display: true,
+//                               text: '얼굴 표정 변화율',
+//                               position : 'bottom',
+//                              }
+//                            },
+//            scales: {
+//                x: {
+//                    beginAtZero: true
+//                }
+//            }
+//        }
+//    });
+//}
+
+// 표정변화율 광대 차트
+function cheekChartDraw(fdata) {
     let facectx = document.getElementById('FaceChartCanvas').getContext('2d');
 
     var face_label = []
-    var face_limit = fdata.face_json.face.mouth.x
+    var face_limit = fdata.face_json.face.cheekbones_list.x
     var i = 0
     do{
        face_label.push(i);
@@ -184,38 +273,18 @@ function faceChartDraw(fdata) {
     }
     while (i <= face_limit)
 
-    var mouth = fdata.face_json.face.mouth.y
-    var brow = fdata.face_json.face.brow.y
     var cheekbones_list = fdata.face_json.face.cheekbones_list.y
-    var nasolabial_folds = fdata.face_json.face.nasolabial_folds.y
 
     // Face : line Chart
     let faceChartData = {
                     labels: face_label,
-                    datasets: [{
-                        label : 'mouth',
-                        data: mouth,
-                        backgroundColor : '#a5dff9',
-                        borderColor : '#a5dff9'
-                    },
+                    datasets: [
                     {
-                        label : 'cheekbones_list',
+                        label : '광대',
                         data: cheekbones_list,
                         backgroundColor : '#ec7079',
                         borderColor : '#ec7079'
                     },
-                    {
-                        label : 'brow',
-                        data: brow,
-                        backgroundColor : '#bb9ecb',
-                        borderColor : '#bb9ecb'
-                    },
-                    {
-                        label : 'nasolabial_folds',
-                        data: nasolabial_folds,
-                        backgroundColor : '#ffdfa2',
-                        borderColor : '#ffdfa2'
-                    }
                     ]
                 };
 
@@ -230,7 +299,161 @@ function faceChartDraw(fdata) {
                               },
                       title: {
                                display: true,
-                               text: '얼굴 표정 변화율',
+                               text: '광대 주변 변화율',
+                               position : 'bottom',
+                              }
+                            },
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// 표정변화율 팔자 차트
+function nasolabialChartDraw(fdata) {
+    let face2ctx = document.getElementById('Face2ChartCanvas').getContext('2d');
+
+    var face_label = []
+    var face_limit = fdata.face_json.face.nasolabial_folds.x
+    var i = 0
+    do{
+       face_label.push(i);
+       i += 50;
+    }
+    while (i <= face_limit)
+
+    var nasolabial_folds = fdata.face_json.face.nasolabial_folds.y
+
+    // Face : line Chart
+    let faceChartData = {
+                    labels: face_label,
+                    datasets: [
+                    {
+                        label : '팔자',
+                        data: nasolabial_folds,
+                        backgroundColor : '#ffdfa2',
+                        borderColor : '#ffdfa2'
+                    }
+                    ]
+                };
+
+    window.faceChart = new Chart(face2ctx, {
+        type: 'line',
+        labels : 'face',
+        data: faceChartData,
+        options: {
+            plugins: {
+                      legend: {
+                               display : false,
+                              },
+                      title: {
+                               display: true,
+                               text: '팔자 주름 주변 변화율',
+                               position : 'bottom',
+                              }
+                            },
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// 표정변화율 입 차트
+function mouthChartDraw(fdata) {
+    let face3ctx = document.getElementById('Face3ChartCanvas').getContext('2d');
+
+    var face_label = []
+    var face_limit = fdata.face_json.face.mouth.x
+    var i = 0
+    do{
+       face_label.push(i);
+       i += 50;
+    }
+    while (i <= face_limit)
+
+    var mouth = fdata.face_json.face.mouth.y
+
+    // Face : line Chart
+    let faceChartData = {
+                    labels: face_label,
+                    datasets: [{
+                        label : '입',
+                        data: mouth,
+                        backgroundColor : '#a5dff9',
+                        borderColor : '#a5dff9'
+                    },
+                    ]
+                };
+
+    window.faceChart = new Chart(face3ctx, {
+        type: 'line',
+        labels : 'face',
+        data: faceChartData,
+        options: {
+            plugins: {
+                      legend: {
+                               display : false,
+                              },
+                      title: {
+                               display: true,
+                               text: '입 주변 변화율',
+                               position : 'bottom',
+                              }
+                            },
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// 표정변화율 미간 차트
+function browChartDraw(fdata) {
+    let face4ctx = document.getElementById('Face4ChartCanvas').getContext('2d');
+
+    var face_label = []
+    var face_limit = fdata.face_json.face.brow.x
+    var i = 0
+    do{
+       face_label.push(i);
+       i += 50;
+    }
+    while (i <= face_limit)
+
+    var brow = fdata.face_json.face.brow.y
+    // Face : line Chart
+    let faceChartData = {
+                    labels: face_label,
+                    datasets: [
+                    {
+                        label : '미간',
+                        data: brow,
+                        backgroundColor : '#bb9ecb',
+                        borderColor : '#bb9ecb'
+                    },
+                    ]
+                };
+
+    window.faceChart = new Chart(face4ctx, {
+        type: 'line',
+        labels : 'face',
+        data: faceChartData,
+        options: {
+            plugins: {
+                      legend: {
+                               display : false,
+                              },
+                      title: {
+                               display: true,
+                               text: '미간 주변 변화율',
                                position : 'bottom',
                               }
                             },
@@ -306,11 +529,11 @@ function poseChartDraw(pdata) {
     none = (none/alllen) * 100
 
     let poseChartData = {
-    labels: ['흐트러진 자세', 'None', '올바른 자세'],
+    labels: [ '올바른 자세','흐트러진 자세', 'None',],
     datasets: [{
-        data: [unbalance, none, balance],
-        backgroundColor : ['#a5dff9', 'darkgray', 'lightgray'],
-        offset: [5,0,0]
+        data: [balance, unbalance, none, ],
+        backgroundColor : ['#a5dff9', '#fecaca', '#b4b6b8', ],
+        offset: [0,5,0]
         }]
     };
 
@@ -347,11 +570,11 @@ function shoulderChartDraw(pdata) {
     none = (none/alllen) * 100
 
     let shoulderChartData = {
-    labels: ['흐트러진 자세', 'None', '올바른 자세'],
+    labels: [ '올바른 자세','흐트러진 자세', 'None',],
     datasets: [{
-        data: [unbalance, none, balance],
-        backgroundColor : ['#a5dff9', 'darkgray', 'lightgray'],
-        offset: [5,0,0]
+        data: [balance, unbalance, none, ],
+        backgroundColor : ['#a5dff9', '#fecaca', '#b4b6b8', ],
+        offset: [0,5,0]
         }]
     };
 
@@ -388,11 +611,11 @@ function pelvisChartDraw(pdata) {
     none = (none/alllen) * 100
 
     let pelvisChartData = {
-    labels: ['흐트러진 자세', 'None', '올바른 자세'],
+    labels: [ '올바른 자세','흐트러진 자세', 'None',],
     datasets: [{
-        data: [unbalance, none, balance],
-        backgroundColor : ['#a5dff9', 'darkgray', 'lightgray'],
-        offset: [5,0,0]
+        data: [balance, unbalance, none, ],
+        backgroundColor : ['#a5dff9', '#fecaca', '#b4b6b8', ],
+        offset: [0,5,0]
         }]
     };
 
@@ -429,11 +652,11 @@ function eyeposeChartDraw(pdata) {
     none = (none/alllen) * 100
 
     let eyeposeChartData = {
-    labels: ['흐트러진 자세', 'None', '올바른 자세'],
+    labels: [ '올바른 자세','흐트러진 자세', 'None',],
     datasets: [{
-        data: [unbalance, none, balance],
-        backgroundColor : ['#a5dff9', 'darkgray', 'lightgray'],
-        offset: [5,0,0]
+        data: [balance, unbalance, none, ],
+        backgroundColor : ['#a5dff9', '#fecaca', '#b4b6b8', ],
+        offset: [0,5,0]
         }]
     };
 
@@ -509,7 +732,7 @@ function imghide(imgname){
 
 }
 
-// 목소리 톤 결과 출력
+// 목소리 헤르츠 결과 출력
 function voice_txt(vdata){
 
     var vstd = vdata.voice_json.voice_std
@@ -518,41 +741,41 @@ function voice_txt(vdata){
     var res_txt = ''
 
     if(vres == 1){
-        res_txt = '목소리 톤이 너무 단조롭습니다. 조금만 더 목소리의 음성의 높낮이를 다양하게 해보세요.'
+        res_txt = '- 목소리의 높낮이가 너무 단조롭습니다. 조금만 더 목소리의 음성의 높낮이를 다양하게 해보세요.'
     }
     else if(vres == 2){
-        res_txt = '목소리 톤이 적정합니다. 핵심 단어는적절히 강조해 주세요.'
+        res_txt = '- 목소리의 높낮이가 적정합니다. 핵심 단어는 적절히 강조해 주세요.'
     }
     else if(vres == 3){
-        res_txt = '목소리 톤이 아나운서와 유사합니다. 긴장하지마시고 이대로만 하세요.'
+        res_txt = '- 목소리의 높낮이가 아나운서와 유사합니다. 긴장하지마시고 이대로만 하세요.'
     }
     else {
-        res_txt = '목소리 톤이 너무 산만합니다. 마음을 가라앉히고 침착하게 해보세요.'
+        res_txt = '- 목소리의 높낮이가 너무 산만합니다. 마음을 가라앉히고 침착하게 해보세요.'
     }
 
+    // 아나운서 유사 출력
     var vinfo = document.getElementById("vinfo");
-    var node = document.createTextNode(res_txt);
-    vinfo.appendChild(node);
+    var res_node = document.createTextNode(res_txt);
+    vinfo.appendChild(res_node);
+
+    // 평균 헤르츠 출력
+    var v_hz = document.getElementById("v_hz");
+    var avg_node = document.createTextNode(vavg);
+    v_hz.appendChild(avg_node);
 
 }
 
 // fillerwords 테이블 생성
-function fillerwords(data) {
+function fillerwords(sdata) {
 
     var fw = sdata.stt_json.fillerwords;
-    var test = sdata.stt_json.fillerwords.그냥;
+    var table = document.getElementById('filler_table')
 
-    console.log(fw);
-    console.log(test);
-
-    var table = document.getElementById('table1')
-
-    for (var i=0; i < data.length; i++) {
+    for (var i=0; i < fw.length; i++) {
         var row = `<tr>
-                    <td>${data[i].이름}</td>
-                    <td>${data[i].나이}</td>
-                    <td>${data[i].성별}</td> </tr>`
-
+                    <td>${fw[i].text}</td>
+                    <td>${fw[i].weight}</td>
+                    </tr>`
                     table.innerHTML += row
     }
 }
@@ -609,14 +832,14 @@ function sylab(sdata){
  	  valueBox: {
  	    placement: 'center',
  	    text:'%v', //default
- 	    fontSize:35,
+ 	    fontSize:30,
  	    rules:[
  	      {
- 	        rule: '%v >= 300 && %v < 400',
+ 	        rule: '%v > 300 && %v < 550',
  	        text: '%v<br>Fast'
  	      },
  	      {
- 	        rule: '%v < 300  && %v >= 240',
+ 	        rule: '%v <= 300  && %v >= 240',
  	        text: '%v<br>Good'
  	      },
  	      {
@@ -651,19 +874,19 @@ function sylab(sdata){
 	  },
 	  labels:['0','','','','','240','300','','400'],
 	  ring:{
-	    size:50,
+	    size:60,
 	    rules:[
 	      {
 	        rule:'%v <= 240',
-	        backgroundColor:'#E53935'
+	        backgroundColor:'#ffd573'
 	      },
 	      {
-	        rule:'%v > 300 && %v < 240',
-	        backgroundColor:'#EF5350'
+	        rule:'%v < 300 && %v > 240',
+	        backgroundColor:'#29B6F6'
 	      },
 	      {
 	        rule:'%v >= 300',
-	        backgroundColor:'#29B6F6'
+	        backgroundColor:'#EF5350'
 	      }
 	    ]
 	  }
@@ -672,7 +895,7 @@ function sylab(sdata){
 		{
 			values : [sylab_min], // starting value
 			backgroundColor:'black',
-	    indicator:[10,10,10,10,0.75],
+	    indicator:[10,10,10,10,0.5],
 	    animation:{
         effect:2,
         method:1,
@@ -686,8 +909,8 @@ function sylab(sdata){
 zingchart.render({
 	id : 'sylab_chart',
 	data : myConfig,
-	height: '100%',
-	width: '100%'
+	height: 350,
+	width: '100%',
 });
 
 
